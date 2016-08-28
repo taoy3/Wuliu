@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_180">
 
-        <com.wl.view.AutoScrollViewPager
+        <com.taoy3.freight.view.AutoScrollViewPager
             android:id="@+id/ad"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_180" />

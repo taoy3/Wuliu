@@ -1,9 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context="com.kunxin.mobile.android.kxscs.activity.EnquiryDetailActivity">
+    android:background="@color/white">
     <include layout="@layout/title_layout" />
     <ScrollView
         android:layout_marginTop="@dimen/margin_60"
@@ -120,7 +118,7 @@
             android:layout_marginTop="@dimen/margin_20"
             android:text="@string/additional_details"
             android:textSize="20sp" />
-        <com.wl.view.MyGridView
+        <com.taoy3.freight.view.MyGridView
             android:layout_margin="@dimen/margin_10"
             android:visibility="gone"
             android:id="@+id/price_details_list"
