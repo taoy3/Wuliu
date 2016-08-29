@@ -35,9 +35,9 @@ public class VoyageActivity extends BaseActivity implements AdapterView.OnItemCl
     private CompanyDB companyDBAccess = CompanyDB.getInstance();
     private AdPagerAdapter adPagerAdapter;
     private ArrayList<String> urls = new ArrayList<>();
-    private Company company;
-    private Port startPort;
-    private Port destPort;
+    private Company company=new Company();
+    private Port startPort=new Port();
+    private Port destPort=new Port();
     private ListView historyLv;
     private ArrayAdapter adapter;
     private List<String> histories = new ArrayList<>();
@@ -128,8 +128,8 @@ public class VoyageActivity extends BaseActivity implements AdapterView.OnItemCl
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        int id = data.getIntExtra(ID, 0);
-        if (data != null) {
+        int id;
+        if (data != null&&((id = data.getIntExtra(ID, 0))>0)) {
             switch (requestCode) {
                 case STARTPORTCODE:
                     startPort = dbAccess.query(id);
@@ -163,9 +163,9 @@ public class VoyageActivity extends BaseActivity implements AdapterView.OnItemCl
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         String[] strings = histories.get(i).split("-");
-        company.setId(companyDBAccess.queryIdByName(strings[0]));
-        startPort.setId(dbAccess.queryIdByName(strings[1]));
-        destPort.setId(dbAccess.queryIdByName(strings[2]));
+        startPort.setId(dbAccess.queryIdByName(strings[0]));
+        destPort.setId(dbAccess.queryIdByName(strings[1]));
+        company.setId(companyDBAccess.queryIdByName(strings[2]));
         startQuery();
     }
 

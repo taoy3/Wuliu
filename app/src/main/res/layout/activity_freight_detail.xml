@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context="com.kunxin.mobile.android.kxscs.activity.PriceDetailActivity">
+    android:background="@color/white">
     <include layout="@layout/title_layout" />
     <ScrollView
         android:layout_width="match_parent"
@@ -73,7 +72,7 @@
             <TextView
                 style="@style/line"
                 android:layout_marginBottom="@dimen/margin_5" />
-            <com.wl.view.ChildGridView
+            <com.taoy3.freight.view.ChildGridView
                 android:id="@+id/freight_box"
                 android:layout_margin="@dimen/margin_10"
                 android:padding="@dimen/padding_1"
@@ -197,7 +196,7 @@
                 android:clickable="true"
                 android:drawableLeft="@android:drawable/ic_input_add"
                 android:layout_marginBottom="@dimen/margin_10"/>
-                <com.wl.view.ChildListView
+                <com.taoy3.freight.view.ChildGridView
                     android:visibility="gone"
                     android:id="@+id/price_details_list"
                     android:layout_width="match_parent"

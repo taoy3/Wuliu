@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.taoy3.freight.bean.PriceBean;
 
@@ -13,14 +14,14 @@ import java.util.List;
 public class FreightDB {
     private static final String TABLE_NAME = "freight";
     private static final String ID = "id";
-    private static final String SC_NAME = "sc_name";
+    private static final String SC_CODE = "sc_code";
     private static final String SC_ID = "sc_id";
     private static final String START_PORT = "startPort";//起运港
     private static final String DEST_ID = "destId";
-    private static final String START_ID="startId";
+    private static final String START_ID = "startId";
     private static final String LINE = "line";//航线代码
     public static final String SQL = "create table " + TABLE_NAME + "(" + ID + " integer primary key autoincrement, " +
-            START_ID+" integer,"+DEST_ID+" integer,"+ SC_NAME + " varchar(20), " + SC_ID + " varchar(20), "
+            START_ID + " integer," + DEST_ID + " integer," + SC_CODE + " varchar(20), " + SC_ID + " varchar(20), "
             + START_PORT + " varchar(20), " + LINE + " integer)";
     private static ExternalDbHelper helper;
     private static FreightDB dbAccess;
@@ -45,12 +46,12 @@ public class FreightDB {
     public void insert(PriceBean priceBean) {
         SQLiteDatabase db = helper.getReadableDatabase();
         ContentValues values = new ContentValues();
-        values.put(SC_NAME, priceBean.getSc_name());
+        values.put(SC_CODE, priceBean.getSc_code());
         values.put(START_PORT, priceBean.getStartPort());
         values.put(LINE, priceBean.getLine());
         values.put(SC_ID, priceBean.getSc_id());
-        values.put(START_ID,priceBean.getStartPortId());
-        values.put(DEST_ID,priceBean.getDestPortId());
+        values.put(START_ID, priceBean.getStartPortId());
+        values.put(DEST_ID, priceBean.getDestPortId());
         long id = db.insert(TABLE_NAME, null, values);
         priceDB.insert(priceBean.getItems(), id);
         db.close();
@@ -77,12 +78,12 @@ public class FreightDB {
     public void update(PriceBean priceBean) {
         SQLiteDatabase db = helper.getReadableDatabase();
         ContentValues values = new ContentValues();
-        values.put(SC_NAME, priceBean.getSc_name());
+        values.put(SC_CODE, priceBean.getSc_code());
         values.put(START_PORT, priceBean.getStartPort());
         values.put(LINE, priceBean.getLine());
         values.put(SC_ID, priceBean.getSc_id());
-        values.put(START_ID,priceBean.getStartPortId());
-        values.put(DEST_ID,priceBean.getDestPortId());
+        values.put(START_ID, priceBean.getStartPortId());
+        values.put(DEST_ID, priceBean.getDestPortId());
         db.update(TABLE_NAME, values, ID + "=?", new String[]{priceBean.getId() + ""});
         priceDB.update(priceBean.getItems(), priceBean.getId());
         db.close();
@@ -97,8 +98,8 @@ public class FreightDB {
      */
     public List<PriceBean> query(int startId, int destId) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        return getCursor(db.query(TABLE_NAME, null, START_ID + "=? and "+DEST_ID+"=?"
-                , new String[]{startId + "",destId+""}, null, null, ID));
+        return getCursor(db.query(TABLE_NAME, null, START_ID + "=? and " + DEST_ID + "=?"
+                , new String[]{startId + "", destId + ""}, null, null, ID));
     }
 
     @NonNull
@@ -108,10 +109,10 @@ public class FreightDB {
             PriceBean object = new PriceBean();
             object.setId(cursor.getInt(cursor.getColumnIndex(ID)));
             object.setStartPort(cursor.getString(cursor.getColumnIndex(START_PORT)));
-            object.setItems(priceDB.query(object.getSc_id(),object.getStartPortId(),object.getDestPortId()));
+            object.setItems(priceDB.query(object.getSc_id(), object.getStartPortId(), object.getDestPortId()));
             object.setSc_id(cursor.getInt(cursor.getColumnIndex(SC_ID)));
             object.setLine(cursor.getString(cursor.getColumnIndex(LINE)));
-            object.setSc_name(cursor.getString(cursor.getColumnIndex(SC_NAME)));
+            object.setSc_code(cursor.getString(cursor.getColumnIndex(SC_CODE)));
             object.setStartPortId(cursor.getInt(cursor.getColumnIndex(START_ID)));
             object.setDestPortId(cursor.getInt(cursor.getColumnIndex(DEST_ID)));
             list.add(object);
@@ -123,12 +124,12 @@ public class FreightDB {
         SQLiteDatabase db = helper.getReadableDatabase();
         for (PriceBean priceBean : priceBeans) {
             ContentValues values = new ContentValues();
-            values.put(SC_NAME, priceBean.getSc_name());
+            values.put(SC_CODE, priceBean.getSc_code());
             values.put(START_PORT, priceBean.getStartPort());
             values.put(LINE, priceBean.getLine());
             values.put(SC_ID, priceBean.getSc_id());
-            values.put(START_ID,priceBean.getStartPortId());
-            values.put(DEST_ID,priceBean.getDestPortId());
+            values.put(START_ID, priceBean.getStartPortId());
+            values.put(DEST_ID, priceBean.getDestPortId());
             long id = db.insert(TABLE_NAME, null, values);
 
             priceDB.insert(priceBean.getItems(), id);
@@ -147,11 +148,18 @@ public class FreightDB {
         return voyages.get(0);
     }
 
-    public List<PriceBean> query(int startPortId, int destPortId, int scID) {
+    public List<PriceBean> query(int startPortId, int destPortId, String scCode) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        List<PriceBean> voyages = getCursor(db.query(TABLE_NAME, null, SC_ID + "=? and " + START_ID
-                + "=? and " + DEST_ID + "=?", new String[]{scID + "", startPortId + "",
-                destPortId + ""}, null, null, ID));
+        List<PriceBean> voyages;
+        if (TextUtils.isEmpty(scCode)) {
+            voyages = getCursor(db.query(TABLE_NAME, null, SC_CODE + "=? and " + START_ID
+                    + "=? and " + DEST_ID + "=?", new String[]{scCode + "", startPortId + "",
+                    destPortId + ""}, null, null, ID));
+        } else {
+            voyages = getCursor(db.query(TABLE_NAME, null, START_ID
+                    + "=? and " + DEST_ID + "=?", new String[]{startPortId + "",
+                    destPortId + ""}, null, null, ID));
+        }
         db.close();
         return voyages;
     }

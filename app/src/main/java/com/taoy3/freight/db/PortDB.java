@@ -192,6 +192,9 @@ public class PortDB {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select " + ID + " from " + TABLE_NAME
                 + " where " + NAME_ZH + "=?", new String[]{name});
-        return cursor.getInt(cursor.getColumnIndex(ID));
+        if(cursor.moveToNext()){
+            return cursor.getInt(cursor.getColumnIndex(ID));
+        }
+        return -1;
     }
 }

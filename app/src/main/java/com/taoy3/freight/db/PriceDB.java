@@ -13,7 +13,7 @@ import java.util.List;
 public class PriceDB {
 	private static final String TABLE_NAME = "price";
 	private static final String ID="id";
-	private static final String SC_NAME="sc_name";
+	private static final String SC_CODE="sc_code";
 	private static final String CLS="cls";//截关日期
 	private static final String ETD="etd";//开船日期
 	private static final String START_PORT = "startPort";//起运港
@@ -28,7 +28,7 @@ public class PriceDB {
 	private static final String EVAL_ID="evalid";
 	private static final String SC_ID="sc_id";
 	public static final String SQL="create table "+ TABLE_NAME + "("+ID+" integer primary key autoincrement, " +
-			SC_NAME+" varchar(20), "+CLS+" integer, "+ETD+" integer, "+SC_ID+" varchar(20), "+DEST_PORT
+			SC_CODE+" varchar(20), "+CLS+" integer, "+ETD+" integer, "+DEST_PORT
 			+" varchar(20), "+START_PORT +" varchar(20), "+START_ID+" integer, "+DEST_ID+" integer, "
 			+TT+" integer, "+REMARKS +" varchar(20), "+VIA+" integer, "+SVAL_ID+" integer, "+EVAL_ID+" integer, "
 			+SC_ID+" integer, "+LINE+" integer)";
@@ -74,7 +74,7 @@ public class PriceDB {
 		SQLiteDatabase db = helper.getReadableDatabase();
 		for (PriceEntity priceEntity:priceEntities) {
 			ContentValues values = new ContentValues();
-			values.put(SC_NAME,priceEntity.getSc_name());
+			values.put(SC_CODE,priceEntity.getSc_code());
 			values.put(CLS,priceEntity.getCls());
 			values.put(ETD,priceEntity.getEtd());
 			values.put(START_PORT,priceEntity.getStartPort());
@@ -115,7 +115,7 @@ public class PriceDB {
 		while (cursor.moveToNext()){
 			PriceEntity priceEntity = new PriceEntity();
 			priceEntity.setId(cursor.getInt(cursor.getColumnIndex(ID)));
-			priceEntity.setSc_name(cursor.getString(cursor.getColumnIndex(SC_NAME)));
+			priceEntity.setSc_code(cursor.getString(cursor.getColumnIndex(SC_CODE)));
 			priceEntity.setCls(cursor.getInt(cursor.getColumnIndex(CLS)));
 			priceEntity.setEtd(cursor.getInt(cursor.getColumnIndex(ETD)));
 			priceEntity.setStartPort(cursor.getString(cursor.getColumnIndex(START_PORT)));
@@ -140,7 +140,7 @@ public class PriceDB {
 		SQLiteDatabase db = helper.getReadableDatabase();
 		for (PriceEntity priceEntity:priceEntities) {
 			ContentValues values = new ContentValues();
-			values.put(SC_NAME,priceEntity.getSc_name());
+			values.put(SC_CODE,priceEntity.getSc_code());
 			values.put(CLS,priceEntity.getCls());
 			values.put(ETD,priceEntity.getEtd());
 			values.put(START_PORT,priceEntity.getStartPort());
@@ -160,17 +160,6 @@ public class PriceDB {
 		}
 		db.close();
 	}
-
-//	public PriceEntity query(int id) {
-//		SQLiteDatabase db = helper.getReadableDatabase();
-//		List<PriceEntity> voyages = getCursor(db.query(TABLE_NAME, null, ID + "=?"
-//				, new String[]{id + ""}, null, null, ID));
-//		db.close();
-//		if(voyages.size()==0){
-//			return null;
-//		}
-//		return voyages.get(0);
-//	}
 
 	public List<PriceEntity> query(int scID,int startPortId,int destPortId) {
 		SQLiteDatabase db = helper.getReadableDatabase();

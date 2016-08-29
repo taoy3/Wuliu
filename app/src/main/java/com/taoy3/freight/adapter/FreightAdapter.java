@@ -14,6 +14,7 @@ import com.taoy3.freight.R;
 import com.taoy3.freight.bean.BoxBean;
 import com.taoy3.freight.bean.PriceBean;
 import com.taoy3.freight.bean.PriceEntity;
+import com.taoy3.freight.util.DateUtils;
 import com.taoy3.freight.view.ChildGridView;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class FreightAdapter extends BaseExpandableListAdapter{
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.companyNameTv.setText(list.get(i).getSc_name());
+        holder.companyNameTv.setText(list.get(i).getSc_code());
         holder.freightCountTv.setText(list.get(i).getItems().size() + "条运价");
         holder.freightCountTv.setPaintFlags(holder.freightCountTv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         return convertView;
@@ -100,7 +101,8 @@ public class FreightAdapter extends BaseExpandableListAdapter{
         holder.startTv.setText(list.get(i).getItems().get(j).getStartPort());
         holder.lineTv.setText(list.get(i).getItems().get(j).getLine());
         if (list.get(i).getItems().get(j).getCls() != 0) {
-            holder.priceDateTv.setText((list.get(i).getItems().get(j).getCls()) + "/" + (list.get(i).getItems().get(j).getEtd()));
+            holder.priceDateTv.setText(DateUtils.getMD(list.get(i).getItems().get(j).getCls(),0)
+                    + "-" + DateUtils.getMD(list.get(i).getItems().get(j).getEtd(),0));
         }
         ArrayList<String> gps = new ArrayList<>();
         getGps(list.get(i).getItems().get(j).getBoxBeans(), gps);

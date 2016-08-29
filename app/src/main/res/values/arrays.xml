@@ -93,4 +93,9 @@
         <item>直客</item>
         <item>国外代理</item>
     </string-array>
+    <string-array name="curr">
+        <item>CNY</item>
+        <item>USD</item>
+        <item>HKD</item>
+    </string-array>
 </resources>

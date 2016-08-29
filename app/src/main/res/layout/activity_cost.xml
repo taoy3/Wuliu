@@ -157,14 +157,14 @@
                     android:visibility="invisible" />
             </RelativeLayout>
 
-            <com.wl.view.ChildListView
+            <com.taoy3.freight.view.ChildGridView
                 android:id="@+id/cost_surcharges_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/input_layout_frame"
                 android:divider="@color/gray_light"
                 android:dividerHeight="1dp" />
-            <com.wl.view.MyGridView
+            <com.taoy3.freight.view.MyGridView
                 android:layout_margin="@dimen/margin_10"
                 android:visibility="gone"
                 android:id="@+id/cost_surcharges_grid"

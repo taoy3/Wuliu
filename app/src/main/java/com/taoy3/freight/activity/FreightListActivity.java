@@ -37,7 +37,7 @@ public class FreightListActivity extends BaseActivity implements FreightAdapter.
     private ExpandableListView listView;
     private FreightAdapter adapter;
     private List<PriceBean> list = new ArrayList<>();
-    private List<String> scNames = new ArrayList<>();
+    private List<String> scCodes = new ArrayList<>();
     private List<String> scNameList = new ArrayList<>();
     private int total;
     private TextView startPortTv;
@@ -50,6 +50,8 @@ public class FreightListActivity extends BaseActivity implements FreightAdapter.
     private int page = 1;
     private int scId;
     private PortDB dbAccess = PortDB.getInstance();
+    private String scCode;
+
 
     @Override
     protected void setView() {
@@ -85,7 +87,8 @@ public class FreightListActivity extends BaseActivity implements FreightAdapter.
             view.findViewById(R.id.price_box_confirm).setOnClickListener(this);
             view.findViewById(R.id.price_box_cancel).setOnClickListener(this);
             boxSv = (MulSelView) view.findViewById(R.id.price_box_type);
-            costTypeAdapter = new BaseListAdapter<String>(this, Arrays.asList(Config.BOXNAMES), R.layout.adapter_cost_type) {
+            costTypeAdapter = new BaseListAdapter<String>(this, Arrays.asList(Config.BOXNAMES),
+                    R.layout.adapter_cost_type) {
                 @Override
                 protected void convert(ViewHolderHelper helper, String item) {
                     helper.setText(R.id.cost_type_name, item);
@@ -93,7 +96,8 @@ public class FreightListActivity extends BaseActivity implements FreightAdapter.
             };
             boxSv.setAdapter(costTypeAdapter);
             // 创建一个PopuWidow对象,并设置宽，高
-            selectBoxPw = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            selectBoxPw = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
         }
         // 使其聚集
         selectBoxPw.setFocusable(true);
@@ -113,22 +117,19 @@ public class FreightListActivity extends BaseActivity implements FreightAdapter.
         if (selectScPw == null) {
             View view = LayoutInflater.from(this).inflate(R.layout.popup_price_sc, null);
             scSelectLv = (ListView) view.findViewById(R.id.price_select_sc);
-            scSelectLv.setAdapter(new ArrayAdapter(this, R.layout.adapter_array, scNameList));
+            scSelectLv.setAdapter(new ArrayAdapter(this, R.layout.adapter_array, scCodes));
             scSelectLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i).getSc_name().equals(scNameList.get(position))) {
-                            scId = list.get(i).getSc_id();
-                        }
-                    }
+                    scCode = scCodes.get(position);
                     selectScPw.dismiss();
                     initData();
                 }
             });
             view.findViewById(R.id.price_select_sc_all).setOnClickListener(this);
             // 创建一个PopuWidow对象,并设置宽，高
-            selectScPw = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            selectScPw = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
         }
         // 使其聚集
         selectScPw.setFocusable(true);
@@ -176,44 +177,29 @@ public class FreightListActivity extends BaseActivity implements FreightAdapter.
 
     @Override
     protected void initData() {
-        List<PriceBean> temp = FreightDB.getInstance().query(startPort.getId(), destPort.getId(), scId);
+        List<PriceBean> temp = FreightDB.getInstance().query(startPort.getId(), destPort.getId(), scCode);
         if (temp.size() == 0) {
             temp = FreightInterface.create(startPort, destPort);
         }
+        if(scCodes.size()==0){
+            for(PriceBean priceBean:temp){
+                if(!scCodes.contains(priceBean.getSc_code())){
+                    scCodes.add(priceBean.getSc_code());
+                }
+            }
+
+        }
         total = temp.size();
-        //添加数据
-        scNames.clear();
         list.clear();
         list.addAll(temp);
         adapter.notifyDataSetChanged();
 
     }
 
-//    private List<PriceBean> changBean(List<Freight> temp) {
-//        List<PriceBean> priceBeans = new ArrayList<>();
-//        for (int i = 0; i < temp.size(); i++) {
-//            if (!scNames.contains(temp.get(i).getSccode())) {
-//                scNames.add(temp.get(i).getSccode());
-//                priceBeans.add(new PriceBean(temp.get(i)));
-//            }
-//        }
-//        if (scNameList.size() == 0) {
-//            scNameList.addAll(scNames);
-//        }
-//        for (int i = 0; i < temp.size(); i++) {
-//            for (int j = 0; j < priceBeans.size(); j++) {
-//                if (priceBeans.get(j).getSc_name().equals(temp.get(i).getSccode())) {
-//                    priceBeans.get(j).getItems().add(new PriceEntity(temp.get(i)));
-//                }
-//            }
-//        }
-//        return priceBeans;
-//    }
-
     @Override
     public void onChildrenClick(PriceEntity bean) {
         Intent intent = new Intent(this, FreightDetailActivity.class);
-        intent.putExtra(TYPE, bean);
+        intent.putExtra(FREIGHT, bean);
         startActivityForResult(intent, LOCKCODE);
     }
 

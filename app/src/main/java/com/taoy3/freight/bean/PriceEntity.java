@@ -12,7 +12,7 @@ import java.util.List;
  * Created by taoy2 on 15-12-2.
  */
 public class PriceEntity implements Serializable{
-    private String sc_name;
+    private String sc_code;
     private List<BoxBean> boxBeans = new ArrayList<>();
     private int id;
     private long cls;//截关日期
@@ -31,7 +31,7 @@ public class PriceEntity implements Serializable{
     private int sc_id;
 
     public PriceEntity(Port start, Port dest, PriceBean priceBean) {
-        this.sc_name = priceBean.getSc_name();
+        this.sc_code = priceBean.getSc_code();
         this.boxBeans = createBoxes(dest.getId());
         this.etd= DateUtils.after(priceBean.getSc_id());
         this.cls= DateUtils.after(priceBean.getSc_id()+1);
@@ -88,7 +88,7 @@ public class PriceEntity implements Serializable{
 
     private List<BoxBean> createBoxes(int id) {
         List<BoxBean> boxes = new ArrayList<>();
-        for (int i = 0; i < id % 5; i++) {
+        for (int i = 0; i < id % 5+2; i++) {
             boxes.add(new BoxBean("gp"+i%3,i%4));
         }
         return boxes;
@@ -142,12 +142,12 @@ public class PriceEntity implements Serializable{
         this.boxBeans = boxBeans;
     }
 
-    public String getSc_name() {
-        return sc_name;
+    public String getSc_code() {
+        return sc_code;
     }
 
-    public void setSc_name(String sc_name) {
-        this.sc_name = sc_name;
+    public void setSc_code(String sc_code) {
+        this.sc_code = sc_code;
     }
 
     public int getId() {

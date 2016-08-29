@@ -75,7 +75,7 @@ public class EnquiryDetailActivity extends BaseActivity{
         }
         detailGv.setNumColumns(prices.size()/2);
         detailGv.setAdapter(new ArrayAdapter(this,R.layout.adapter_array,prices));
-        companyName = bean.getSc_name();
+        companyName = bean.getSc_code();
         companyNameTv.setText("船公司：" + companyName);
         if (bean.getCls() != 0) {
             st_portTv.setText("截关/开船：" + bean.getCls() + "/" + bean.getEtd());

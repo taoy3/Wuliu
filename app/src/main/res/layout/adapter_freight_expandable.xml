@@ -48,7 +48,7 @@
             android:padding="@dimen/padding_10"/>
 
     </LinearLayout>
-    <com.wl.view.ChildGridView
+    <com.taoy3.freight.view.ChildGridView
         android:id="@+id/freight_gp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

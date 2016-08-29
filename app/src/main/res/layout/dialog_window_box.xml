@@ -13,7 +13,7 @@
         android:textColor="@color/white"
         android:background="@color/blueviolet"
         android:padding="@dimen/padding_10"/>
-    <com.wl.view.MulSelView
+    <com.taoy3.freight.view.MulSelView
         android:layout_below="@+id/title"
         android:id="@+id/box_type"
         android:numColumns="4"

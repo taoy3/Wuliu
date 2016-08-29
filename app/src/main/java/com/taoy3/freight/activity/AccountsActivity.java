@@ -31,7 +31,7 @@ import com.taoy3.freight.bean.CostItemBean;
 import com.taoy3.freight.constant.CacheDataConstant;
 import com.taoy3.freight.constant.MyColor;
 import com.taoy3.freight.listener.CostChangeListener;
-import com.taoy3.freight.view.ChildListView;
+import com.taoy3.freight.view.ChildGridView;
 import com.taoy3.freight.view.MulSelView;
 
 import java.math.BigDecimal;
@@ -46,7 +46,7 @@ public class AccountsActivity extends BaseActivity implements CostAdapter.OnItem
     private Spinner customsSp;
     private TextView customsTv;
     private TextView addCostTypeTv;
-    private ChildListView accountsLv;
+    private ChildGridView accountsLv;
     private CostAdapter costAdapter;
     private EditText otherEt;
     private Spinner otherSp;
@@ -105,7 +105,7 @@ public class AccountsActivity extends BaseActivity implements CostAdapter.OnItem
             addCostTypeTv.setVisibility(View.INVISIBLE);
         }
         //固定费用及附加费
-        accountsLv = (ChildListView) findViewById(R.id.cost_surcharges_list);
+        accountsLv = (ChildGridView) findViewById(R.id.cost_surcharges_list);
         dialogHolder = new CargoDialogHolder(this);
         otherEt = (EditText) findViewById(R.id.cost_other);
         otherEt.addTextChangedListener(this);

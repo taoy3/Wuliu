@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class PriceBean {
     private int id;
-    private String sc_name;
+    private String sc_code;
     private int sc_id;
     private String startPort;//起运港
     private int startPortId;
@@ -35,18 +35,14 @@ public class PriceBean {
     }
 
     public PriceBean(Port start, Port dest, int i) {
-        this.sc_id = i;
-        this.sc_name = CompanyDB.getInstance().queryName(this.sc_id);
+        this.sc_id = i+1;
+        this.sc_code = CompanyDB.getInstance().queryCode(this.sc_id);
         this.startPort = start.getName_zh();
         this.startPortId = start.getId();
         this.destPortId = dest.getId();
         this.line = "DFG"+sc_id;
         this.items=createItem(start,dest);
 
-    }
-
-    public void setSc_name(String sc_name) {
-        this.sc_name = sc_name;
     }
 
     public void setStartPort(String startPort) {
@@ -97,9 +93,14 @@ public class PriceBean {
         return line;
     }
 
-    public String getSc_name() {
-        return sc_name;
+    public String getSc_code() {
+        return sc_code;
     }
+
+    public void setSc_code(String sc_code) {
+        this.sc_code = sc_code;
+    }
+
     public List<PriceEntity> getItems() {
         return items;
     }

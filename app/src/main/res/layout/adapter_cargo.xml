@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:text="20GP"
         android:gravity="center"/>
-    <com.wl.view.AddCutButton
+    <com.taoy3.freight.view.AddCutButton
         android:id="@+id/adapter_cargo_qty"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"/>

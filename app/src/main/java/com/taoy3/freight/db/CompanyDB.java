@@ -202,6 +202,17 @@ public class CompanyDB {
 		}
 		return name;
 	}
+
+	public String queryCode(int id) {
+		SQLiteDatabase db = helper.getReadableDatabase();
+		Cursor cursor = db.rawQuery("select " +CODE + " from " + TABLE_NAME
+				+ " where " + ID + "=?", new String[]{id + ""});
+		String code = null;
+		if(cursor.moveToNext()){
+			code = cursor.getString(cursor.getColumnIndex(CODE));
+		}
+		return code;
+	}
 //	public List<String> searchName(String s) {
 //		String sql= "select "+N+" from "+TABLE_NAME+" where "+NAME_ZH +"match "+query+"or"+NAME_EN+"match"
 //				+query+"or"+CODE+"match"+query;

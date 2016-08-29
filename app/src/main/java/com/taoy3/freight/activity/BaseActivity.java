@@ -73,6 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected static final String NOTIFY = "notify";
     protected static final String PORT_ID = "portId";
     protected static final String VOYAGE = "voyage";
+    protected static final String FREIGHT="freight";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoxDB {
-    private static final String TABLE_NAME = "ports";
+    private static final String TABLE_NAME = "box";
     private static final String ID = "id";
     private static final String PRICE_ID = "priceId";
     private static final String NAME="name";

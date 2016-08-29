@@ -31,8 +31,8 @@ public class FreightActivity extends BaseActivity implements AdapterView.OnItemC
     private PortDB dbAccess = PortDB.getInstance();
     private AdPagerAdapter adPagerAdapter;
     private ArrayList<String> urls = new ArrayList<>();
-    private Port startPort;
-    private Port destPort;
+    private Port startPort= new Port();
+    private Port destPort=new Port();
     private ListView historyLv;
     private ArrayAdapter adapter;
     private List<String> histories = new ArrayList<>();
@@ -56,8 +56,7 @@ public class FreightActivity extends BaseActivity implements AdapterView.OnItemC
         new PagerRadioUtils(viewPager, (RadioGroup) findViewById(R.id.group)).setChangeListener();
         findViewById(R.id.start_port).setOnClickListener(this);
         findViewById(R.id.dest_port).setOnClickListener(this);
-        findViewById(R.id.ship_company).setOnClickListener(this);
-        findViewById(R.id.search_voyage).setOnClickListener(this);
+        findViewById(R.id.search_price).setOnClickListener(this);
         historyLv = (ListView) findViewById(R.id.search_history_list);
     }
 
@@ -96,11 +95,11 @@ public class FreightActivity extends BaseActivity implements AdapterView.OnItemC
             case R.id.ship_company:
                 startActivityForResult(new Intent(this, SearchScActivity.class), SHIPCOMPANYCODE);
                 break;
-            case R.id.search_voyage:
+            case R.id.search_price:
                 if (startPort.getId()>0&&destPort.getId()>0) {
                     StringBuffer buffer = new StringBuffer();
                     buffer.append(dbAccess.queryName(startPort.getId())+"-")
-                            .append(dbAccess.queryName(destPort.getId())+"-");
+                            .append(dbAccess.queryName(destPort.getId()));
                     if (!histories.contains(buffer.toString())) {
                         if (histories.size() > 2) {
                             histories.remove(0);
@@ -121,19 +120,19 @@ public class FreightActivity extends BaseActivity implements AdapterView.OnItemC
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        int id = data.getIntExtra(ID, 0);
-        if (data != null) {
-            switch (requestCode) {
-                case STARTPORTCODE:
-                    startPort = dbAccess.query(id);
-                    startPortTv.setText(startPort.getName_zh());
-                    break;
-                case DESTPORTCODE:
-                    destPort = dbAccess.query(id);
-                    destPortTv.setText(destPort.getName_zh());
-                    break;
-                default:
-                    break;
+        int id;
+        if (data != null&&((id = data.getIntExtra(ID, 0))>0)) {
+                switch (requestCode) {
+                    case STARTPORTCODE:
+                        startPort = dbAccess.query(id);
+                        startPortTv.setText(startPort.getName_zh());
+                        break;
+                    case DESTPORTCODE:
+                        destPort = dbAccess.query(id);
+                        destPortTv.setText(destPort.getName_zh());
+                        break;
+                    default:
+                        break;
             }
         }
     }
@@ -152,8 +151,8 @@ public class FreightActivity extends BaseActivity implements AdapterView.OnItemC
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         String[] strings = histories.get(i).split("-");
-        startPort.setId(dbAccess.queryIdByName(strings[1]));
-        destPort.setId(dbAccess.queryIdByName(strings[2]));
+        startPort.setId(dbAccess.queryIdByName(strings[0]));
+        destPort.setId(dbAccess.queryIdByName(strings[1]));
         startQuery();
     }
 

@@ -2,13 +2,17 @@ package com.taoy3.freight.util;
 
 import android.util.Log;
 
+import com.taoy3.freight.BaseApp;
+import com.taoy3.freight.R;
 import com.taoy3.freight.bean.Company;
 import com.taoy3.freight.bean.Port;
+import com.taoy3.freight.constant.CacheDataConstant;
 import com.taoy3.freight.constant.Config;
 import com.taoy3.freight.db.CompanyDB;
 import com.taoy3.freight.db.PortDB;
 import com.taoy3.freight.netBean.GeoUtil;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,6 +24,12 @@ public class DataUtils {
     public static void initData() {
         initCompany();
         initPort();
+        initCurr();
+    }
+
+    private static void initCurr() {
+        String[] array = BaseApp.getApp().getResources().getStringArray(R.array.curr);
+        CacheDataConstant.currCodes.addAll(Arrays.asList(array));
     }
 
     private static void initCompany() {

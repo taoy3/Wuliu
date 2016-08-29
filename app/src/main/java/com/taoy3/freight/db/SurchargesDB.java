@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SurchargesDB {
-    private static final String TABLE_NAME = "ports";
+    private static final String TABLE_NAME = "surcharge";
     private static final String ID = "id";
     private static final String PRICE_ID = "priceId";
     private static final String GP40="gp40";

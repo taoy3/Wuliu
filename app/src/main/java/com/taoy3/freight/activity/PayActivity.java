@@ -25,7 +25,7 @@ import com.taoy3.freight.bean.BoxBean;
 import com.taoy3.freight.bean.CostBean;
 import com.taoy3.freight.bean.CostItemBean;
 import com.taoy3.freight.constant.CacheDataConstant;
-import com.taoy3.freight.view.ChildListView;
+import com.taoy3.freight.view.ChildGridView;
 import com.taoy3.freight.view.MyGridView;
 
 import java.math.BigDecimal;
@@ -41,7 +41,7 @@ public class PayActivity extends BaseActivity implements CostAdapter.OnItemClick
     private TextView customsTv;
     private EditText otherEt;
     private TextView otherCurTv;
-    private ChildListView payLv;
+    private ChildGridView payLv;
     private CostAdapter costAdapter;
     private RadioButton button;
     //备注
@@ -86,7 +86,7 @@ public class PayActivity extends BaseActivity implements CostAdapter.OnItemClick
         customsCurTv.setVisibility(View.VISIBLE);
         findViewById(R.id.customs_cost_currencies).setVisibility(View.GONE);
         //固定费用及附加费
-        payLv = (ChildListView) findViewById(R.id.cost_surcharges_list);
+        payLv = (ChildGridView) findViewById(R.id.cost_surcharges_list);
         dialogHolder = new CargoDialogHolder(this);
         otherEt = (EditText) findViewById(R.id.cost_other);
         otherEt.addTextChangedListener(this);
@@ -286,7 +286,7 @@ public class PayActivity extends BaseActivity implements CostAdapter.OnItemClick
         }
 
         private void showDialog(TextView costView, CostItemBean entity) {
-            totalTv.setText(entity.getPaycurr());
+//            totalTv.setText(entity.getPaycurr());
             this.entity = entity;
             this.costView = costView;
             boxBeans.clear();

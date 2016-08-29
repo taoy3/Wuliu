@@ -29,10 +29,12 @@ import com.taoy3.freight.bean.AddressBean;
 import com.taoy3.freight.bean.BoxBean;
 import com.taoy3.freight.bean.CostItemBean;
 import com.taoy3.freight.bean.OrderBean;
+import com.taoy3.freight.bean.PriceEntity;
 import com.taoy3.freight.bean.SurchargesEntity;
 import com.taoy3.freight.constant.CacheDataConstant;
 import com.taoy3.freight.constant.Config;
 import com.taoy3.freight.util.BaseDataUtils;
+import com.taoy3.freight.util.DateUtils;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -96,6 +98,7 @@ public class BookActivity extends BaseActivity implements CompoundButton.OnCheck
     private TextView payListTv;
 
     protected OrderBean bean = new OrderBean();
+    private PriceEntity priceEntity;
     private Dialog boxDialog;
 
     @Override
@@ -177,23 +180,24 @@ public class BookActivity extends BaseActivity implements CompoundButton.OnCheck
     protected void initData() {
         CacheDataConstant.orderBean = bean;
         //获取数据
-        bean.setStart_name(CacheDataConstant.price.getStartPort());
-//        bean.setStart_id(CacheDataConstant.price.getStartId());
-//        bean.setDes_name(CacheDataConstant.price.getDestPort());
-//        bean.setDes_id(CacheDataConstant.price.getDestId());
-//        bean.setSc_name(CacheDataConstant.price.getSc_name());
-//        bean.setSc_id(CacheDataConstant.price.getSc_id());
-        bean.setCls(CacheDataConstant.price.getCls() + "");
-        bean.setEtd(CacheDataConstant.price.getEtd() + "");
+        priceEntity= (PriceEntity) getIntent().getSerializableExtra(FREIGHT);
+        bean.setStart_name(priceEntity.getStartPort());
+        bean.setStart_id(priceEntity.getStartId()+"");
+        bean.setDes_name(priceEntity.getDestPort());
+        bean.setDes_id(priceEntity.getDestId()+"");
+        bean.setSc_name(priceEntity.getSc_code());
+        bean.setSc_id(priceEntity.getSc_id()+"");
+        bean.setCls(priceEntity.getCls() + "");
+        bean.setEtd(priceEntity.getEtd() + "");
         startTv.setText(bean.getStart_name());
         destTv.setText(bean.getDes_name());
         companyTv.setText(bean.getSc_name());
-        clsDateView.setText(bean.getCls());
-        startDateView.setText(bean.getEtd());
+        clsDateView.setText(DateUtils.changeDateFormat(priceEntity.getCls()));
+        startDateView.setText(DateUtils.changeDateFormat(priceEntity.getEtd()));
         //初始化附加费
-        List<BoxBean> price = CacheDataConstant.price.getBoxBeans();
+        List<BoxBean> price = priceEntity.getBoxBeans();
         bean.getConnum().addAll(price);
-        List<SurchargesEntity> surcharges = CacheDataConstant.price.getSurcharges();
+        List<SurchargesEntity> surcharges = priceEntity.getSurcharges();
         for (int i = 0; i < surcharges.size(); i++) {
             CostItemBean costBean = new CostItemBean();
             costBean.setPaycurr(surcharges.get(i).getCurr());

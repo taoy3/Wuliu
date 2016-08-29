@@ -33,8 +33,9 @@ import com.taoy3.freight.bean.BoxBean;
 import com.taoy3.freight.bean.OrderBean;
 import com.taoy3.freight.constant.CacheDataConstant;
 import com.taoy3.freight.constant.Config;
+import com.taoy3.freight.db.CompanyDB;
+import com.taoy3.freight.db.PortDB;
 import com.taoy3.freight.util.BaseDataUtils;
-import com.taoy3.freight.util.SQLUtils;
 import com.taoy3.freight.view.MulSelView;
 
 import java.util.Arrays;
@@ -274,13 +275,13 @@ public class BookFastActivity extends BaseActivity implements CompoundButton.OnC
             //应收费用清单
             case R.id.accounts_list:
                 for (int i = 0; i < bean.getConnum().size(); i++) {
-                    if (bean.getConnum().get(i).getNumber()==0) {
+                    if (bean.getConnum().get(i).getNumber() == 0) {
                         bean.getConnum().remove(i);
                     }
                 }
                 boxAdapter.notifyDataSetChanged();
                 if (bean.getConnum().size() == 0) {
-                    Toast.makeText(this,R.string.cost_list_tip, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.cost_list_tip, Toast.LENGTH_SHORT).show();
                 } else {
                     startActivityForResult(new Intent(this, AccountsActivity.class).putExtra(TYPE, true), ACCOUNTSCODE);
                 }
@@ -345,37 +346,33 @@ public class BookFastActivity extends BaseActivity implements CompoundButton.OnC
         switch (requestCode) {
             //起始港返回
             case STARTPORTCODE:
-                String startPort = data.getStringExtra(STARTPORT);
-                if (startPort == null) {
-                    return;
-                }
-                bean.setStart_name(startPort);
-                bean.setStart_id(SQLUtils.queryPortId(startPort));
-                if (bean.getStart_id()!=null)
+                int id = data.getIntExtra(ID, 0);
+                if (id > 0) {
+                    String startPort = PortDB.getInstance().queryName(id);
+                    bean.setStart_name(startPort);
+                    bean.setStart_id(id + "");
                     startTv.setText(startPort);
+                }
                 break;
             //目的港返回
             case DESTPORTCODE:
-                String destPort = data.getStringExtra(DESTPORT);
-                if (destPort == null) {
-                    return;
-                }
-                bean.setDes_name(destPort);
-                bean.setDes_id(SQLUtils.queryPortId(destPort));
-                if (bean.getDes_id() != null) {
+                id = data.getIntExtra(ID, 0);
+                if (id > 0) {
+                    String destPort = PortDB.getInstance().queryName(id);
+                    bean.setDes_name(destPort);
+                    bean.setDes_id(id + "");
                     destTv.setText(destPort);
                 }
                 break;
             //船公司返回
             case SHIPCOMPANYCODE:
-                String shipCompanyCode = data.getStringExtra(CODE);
-                if (shipCompanyCode == null) {
-                    return;
+                id = data.getIntExtra(ID, 0);
+                if (id > 0) {
+                    String company = CompanyDB.getInstance().queryName(id);
+                    bean.setSc_name(company);
+                    bean.setSc_id(id + "");
+                    companyTv.setText(company);
                 }
-                bean.setSc_name(shipCompanyCode);
-                bean.setSc_id(data.getStringExtra(SCID));
-                if (bean.getSc_id() != null)
-                    companyTv.setText(shipCompanyCode);
                 break;
             //发货人返回
             case SHIPPERCODE:
